@@ -1,0 +1,26 @@
+name: dropwizard-continuous-integration
+
+on:
+  push:
+    branch:
+      - main
+
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu/latest
+    steps:
+      - uses: actions/checkout@v1 # checking out code into a machine
+
+      - name: Setup Java # to install Java on the new machine
+        uses: action/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Gradle Build # run the build
+        working-directory: . # run this at the top level
+        run: ./gradlew build -x test # only run the build, don't run the tests
+
+      - name: Test using Gradle # test
+        working-directory: . # run this at the top level
+        run: ./gradlew test
